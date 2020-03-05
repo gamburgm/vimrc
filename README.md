@@ -6,4 +6,5 @@ This is my attempt to get all the functionality I need while coding in Vim. To d
 * Neovim instead of Vim :)
 * Vim-Plug as my plugin manager
 * Usually running Vim inside of tmux
+
 I've tried finding the most effective tools for what I'm looking for, and grabbing things I like from other configurations (e.g. the logo from DOOM emacs), but this is only part of the way there ... for now.
