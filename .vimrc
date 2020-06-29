@@ -8,10 +8,9 @@ Plug 'scrooloose/nerdtree'          " directory tree
 Plug 'sheerun/vim-polyglot'         " syntax coloring (is okay)
 Plug 'itchyny/lightline.vim'        " powerline variant
 Plug 'mhinz/vim-startify'           " for DOOM
-" Plug 'jremmen/vim-ripgrep'
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }  " for linting (kinda sucks)
 Plug 'tpope/vim-fugitive'           " for git
-Plug 'iamcco/markdown-preview.nvim' " markdown preview and hot reload --> doesn't work yet
+Plug 'pantharshit00/vim-prisma'     " for prisma syntax highlighting
+Plug 'ycm-core/YouCompleteMe'       " for autocompletion & linting
 
 call plug#end()
 
@@ -21,6 +20,12 @@ set tabstop=2       " number of spaces tab is shown as
 set softtabstop=2		" number of spaces in a tab in editing
 set shiftwidth=2		" set indent as 2 spaces
 set expandtab			  " convert tabs to spaces
+set smarttab        " insert tabs based on shiftwidth, not tab size
+set shiftround      " use shiftwidth to determine tabbing w/'<' and '>' commands
+
+set autoindent      " always auto-indent
+set copyindent      " copy the previous line's indent on autoindent
+
 
 let python_highlight_all=1 " for python linting
 
@@ -32,6 +37,14 @@ set cursorline	    " highlights current line
 set wildmenu			  " show all autocomplete options (e.g. :e)
 set showmatch			  " show matching brackets
 set lazyredraw      " only redraw when something has been changed
+
+set hidden          " hide previously open buffers rather than closing them (e.g., :e)
+
+set nobackup        " don't create backup files
+set nowritebackup   " don't create write-backup files
+set noswapfile      " don't create backup swap files
+
+set updatetime=300  " shorter update time for VIM and plugins
 
 " set termguicolors and make compatible with tmux
 if exists('+termguicolors')
@@ -48,6 +61,7 @@ let g:lightline = { 'colorscheme': 'solarized' } " solarized colorscheme for lig
 set incsearch			" search as characters are entered
 set hlsearch			" highlight matches
 set ignorecase		" ignore case for search
+set smartcase     " ignore case if search pattern all lowercase, case-sensitive otherwise TODO does this break the above one?
 
 " move vertically by visual line--don't skip screen-wrapped lines
 nnoremap j gj
@@ -83,23 +97,16 @@ let g:ascii = [
   \]
 
 let g:startify_custom_header_quotes = [
-  \ ["                       What, you thought this was emacs?"],
   \ ["                                Welcome to VIM"],
   \ ["                                Welcome to HELL"],
-  \ ["                          Correct answer, zero points"]
+  \ ["                          Correct answer, zero points"],
+  \ ["                        I'll give you a hint: left paren"],
+  \ ["                                     oopsah"]
   \]
 
 let g:startify_custom_header = startify#center(g:ascii + g:startify#fortune#quote())
 
+let mapleader=','
 
-" coc.nvim configuration
-set hidden        " something something buffers
+map <C-n> :NERDTreeToggle<CR>
 
-set nobackup      " don't create backup files
-set nowritebackup " don't create write-backup files
-
-set updatetime=300 " update coc.nvim more quickly
-
-" coc-jest configuration
-command! -nargs=0 Jest :call  CocAction('runCommand', 'jest.projectTest')     " run tests in project
-command! -nargs=0 JestCurrent :call  CocAction('runCommand', 'jest.fileTest', ['%']) " run tests in current file
