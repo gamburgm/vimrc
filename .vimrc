@@ -1,5 +1,8 @@
 filetype plugin indent on
 
+let $MYVIMRC = '~/.vimrc'
+let mapleader=','
+
 call plug#begin('~/.vim/plugged')
 
 Plug 'lifepillar/vim-solarized8'    " colorscheme
@@ -11,6 +14,11 @@ Plug 'mhinz/vim-startify'           " for DOOM
 Plug 'tpope/vim-fugitive'           " for git
 Plug 'pantharshit00/vim-prisma'     " for prisma syntax highlighting
 Plug 'ycm-core/YouCompleteMe'       " for autocompletion & linting
+Plug 'tpope/vim-commentary'         " For commenting things out
+Plug 'rachitnigam/drracket.vim'     " For Dr.Racket Arrows -> It doesn't work very well, kinda want to clone and modify
+" Plug 'kovisoft/slimv'
+" Plug 'junegunn/rainbow_parentheses.vim' " For rainbow parens
+" Plug 'vim-scripts/paredit.vim'      " For working with Lisps
 
 call plug#end()
 
@@ -46,6 +54,15 @@ set noswapfile      " don't create backup swap files
 
 set updatetime=300  " shorter update time for VIM and plugins
 
+
+noremap <C-N> :NERDTreeToggle<CR>
+
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+nnoremap <leader>pv :PlugInstall<CR>
+nnoremap <leader>pc :PlugClean<CR>
+
+
 " set termguicolors and make compatible with tmux
 if exists('+termguicolors')
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -67,10 +84,17 @@ set smartcase     " ignore case if search pattern all lowercase, case-sensitive 
 nnoremap j gj
 nnoremap k gk
 
+nnoremap dr 0d$
+
 " allows backspace in insert mode to delete all characters
 " including tabs, eol, and where the cursor started
 " see :help 'backspace'
 set backspace=indent,eol,start
+
+augroup commentary
+  autocmd!
+  autocmd FileType racket setlocal commentstring=;;\ %s
+augroup END
 
 " custom header for vim screen, inspired by DOOM emacs
 
@@ -96,17 +120,21 @@ let g:ascii = [
   \ "`''                                                                      ``'",
   \]
 
+  " \ ["  The object-oriented model makes it easy to build up programs by accretion.\n     What this often means\n, in practice, is that it\n provides a structures way to write spaghetti\n code."]
 let g:startify_custom_header_quotes = [
   \ ["                                Welcome to VIM"],
   \ ["                                Welcome to HELL"],
   \ ["                          Correct answer, zero points"],
   \ ["                        I'll give you a hint: left paren"],
-  \ ["                                     oopsah"]
+  \ ["                                     oopsah"],
   \]
 
 let g:startify_custom_header = startify#center(g:ascii + g:startify#fortune#quote())
 
-let mapleader=','
-
-map <C-n> :NERDTreeToggle<CR>
-
+let g:ctrlp_prompt_mappings = {
+  \ 'PrtBS()':    ['<BS>'],
+  \ 'PrtCurleft()': ['<C-[>', '<left>', '<C-^>'],
+  \ 'PrtCurRight()': ['<C-]>', '<right>'],
+  \ 'ToggleType(1)': ['<C-L>', '<C-Up>'],
+  \ 'ToggleType(-1)': ['<C-H>', '<C-Down>'],
+  \ }
