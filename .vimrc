@@ -1,6 +1,6 @@
 filetype plugin indent on
 
-let $MYVIMRC = '~/.vimrc'
+let $MYVIMRC = '~/vimrc/.vimrc'
 let mapleader=','
 
 call plug#begin('~/.vim/plugged')
@@ -9,11 +9,12 @@ Plug 'lifepillar/vim-solarized8'    " colorscheme
 Plug 'ctrlpvim/ctrlp.vim'           " fuzzy file search
 Plug 'scrooloose/nerdtree'          " directory tree
 Plug 'sheerun/vim-polyglot'         " syntax coloring (is okay)
-Plug 'itchyny/lightline.vim'        " powerline variant
+Plug 'vim-airline/vim-airline'      " Status line for vim
+Plug 'vim-airline/vim-airline-themes' " Themes for status line
 Plug 'mhinz/vim-startify'           " for DOOM
 Plug 'tpope/vim-fugitive'           " for git
 Plug 'pantharshit00/vim-prisma'     " for prisma syntax highlighting
-Plug 'ycm-core/YouCompleteMe'       " for autocompletion & linting
+" Plug 'ycm-core/YouCompleteMe'       " for autocompletion & linting
 Plug 'tpope/vim-commentary'         " For commenting things out
 Plug 'rachitnigam/drracket.vim'     " For Dr.Racket Arrows -> It doesn't work very well, kinda want to clone and modify
 " Plug 'kovisoft/slimv'
@@ -54,14 +55,12 @@ set noswapfile      " don't create backup swap files
 
 set updatetime=300  " shorter update time for VIM and plugins
 
-
 noremap <C-N> :NERDTreeToggle<CR>
 
 nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
 nnoremap <leader>pv :PlugInstall<CR>
 nnoremap <leader>pc :PlugClean<CR>
-
 
 " set termguicolors and make compatible with tmux
 if exists('+termguicolors')
@@ -72,8 +71,6 @@ endif
 
 set background=dark	    " dark colorscheme
 colorscheme solarized8  " solarized colorscheme
-
-let g:lightline = { 'colorscheme': 'solarized' } " solarized colorscheme for lightline
 
 set incsearch			" search as characters are entered
 set hlsearch			" highlight matches
@@ -138,3 +135,16 @@ let g:ctrlp_prompt_mappings = {
   \ 'ToggleType(1)': ['<C-L>', '<C-Up>'],
   \ 'ToggleType(-1)': ['<C-H>', '<C-Down>'],
   \ }
+
+let g:airline_theme = 'solarized'
+let g:airline_powerline_fonts = 1
+
+if executable('rg')
+	set grepprg=rg\ --color=never
+	let g:ctrlp_user_command = 'rg %s --files --color=never --glob ""'
+	let g:ctrlp_use_caching = 0
+endif
+
+" Terminal config
+tnoremap <Esc> <C-\><C-N>
+tnoremap <C-W> <Esc><C-W>
